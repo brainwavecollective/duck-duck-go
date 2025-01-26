@@ -1,7 +1,7 @@
 import cv2
 from ultralytics import YOLO
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 model = YOLO('yolov8n.pt')
 
 def get_duck_position(box_coords, height=480, width=640):
@@ -23,16 +23,18 @@ while True:
     if not ret:
         break
         
-    results = model(frame, conf=0.3)  # Lowered confidence threshold
+    results = model(frame, conf=0.10)
     
     for r in results:
         for box in r.boxes:
-            # Print all detected objects and their confidence
             class_name = model.names[int(box.cls[0])]
-            confidence = float(box.conf[0])
-            print(f"Detected: {class_name} ({confidence:.2f})")
             
             if class_name == "teddy bear":
+                confidence = float(box.conf[0])
+                x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                label = f"Duck ({confidence:.2f})"
+                cv2.putText(frame, label, (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                 pos = get_duck_position(box.xyxy[0].tolist())
                 print(f"Duck at: {pos}")
                 
