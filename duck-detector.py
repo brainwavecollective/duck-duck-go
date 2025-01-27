@@ -3,7 +3,8 @@ from ultralytics import YOLO
 import numpy as np
 
 cap = cv2.VideoCapture(1)
-model = YOLO('yolov8n.pt')
+#model = YOLO('yolov8n.pt')
+model = YOLO('https://huggingface.co/brainwavecollective/yolo8n-rubber-duck-detector/resolve/main/yolov8n_rubberducks.pt')
 
 def get_coordinates(box_coords):
     x1, y1, x2, y2 = box_coords
