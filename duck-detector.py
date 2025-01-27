@@ -32,7 +32,7 @@ while True:
     if not ret:
         break
         
-    results = model(frame, conf=0.11)
+    results = model(frame, conf=0.4)
     
     # Store all valid boxes
     valid_boxes = []
